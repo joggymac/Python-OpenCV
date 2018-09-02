@@ -1,9 +1,14 @@
 from imutils.video import VideoStream
+import Seeme
 import argparse
 import datetime
 import imutils
 import time
 import cv2
+
+face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
+
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
@@ -40,7 +45,7 @@ while True:
     frame = imutils.resize(frame, width=500)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     gray = cv2.GaussianBlur(gray, (21, 21), 0)
-
+    faces = face_cascade.detectMultiScale(gray, 1.3, 5)
     # if the first frame is None, initialize it
     if firstFrame is None:
         firstFrame = gray
@@ -48,27 +53,26 @@ while True:
 
         # compute the absolute difference between the current frame and
         # first frame
-        frameDelta = cv2.absdiff(firstFrame, gray)
-        thresh = cv2.threshold(frameDelta, 25, 255, cv2.THRESH_BINARY)[1]
-
+    frameDelta = cv2.absdiff(firstFrame, gray)
+    thresh = cv2.threshold(frameDelta, 25, 255, cv2.THRESH_BINARY)[1]
         # dilate the thresholded image to fill in holes, then find contours
         # on thresholded image
-        thresh = cv2.dilate(thresh, None, iterations=2)
-        cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
+    thresh = cv2.dilate(thresh, None, iterations=2)
+    cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
                                 cv2.CHAIN_APPROX_SIMPLE)
-        cnts = cnts[0] if imutils.is_cv2() else cnts[1]
+    cnts = cnts[0] if imutils.is_cv2() else cnts[1]
 
         # loop over the contours
-        for c in cnts:
+    for c in cnts:
             # if the contour is too small, ignore it
-            if cv2.contourArea(c) < args["min_area"]:
+        if cv2.contourArea(c) < args["min_area"]:
                 continue
 
-            # compute the bounding box for the contour, draw it on the frame,
-            # and update the text
-            (x, y, w, h) = cv2.boundingRect(c)
-            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            text = "Occupied"
+        # compute the bounding box for the contour, draw it on the frame,
+        # and update the text
+        (x, y, w, h) = cv2.boundingRect(c)
+        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        text = "Occupied"
             # draw the text and timestamp on the frame
         cv2.putText(frame, "Room Status: {}".format(text), (10, 20),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
