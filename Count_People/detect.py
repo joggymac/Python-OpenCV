@@ -82,16 +82,14 @@ while True:
     CoorXEntranceLine = (height // 2) - OffsetRefLines
     CoorXExitLine = (height // 2) + OffsetRefLines
 
-    cv2.line(frame, (height, CoorXEntranceLine), (width, CoorXEntranceLine), (255, 0, 0), 2)
-    cv2.line(frame, (height, CoorXExitLine), (width, CoorXExitLine), (0, 0, 255), 2)
+    #cv2.line(frame, (height, CoorXEntranceLine), (width, CoorXEntranceLine), (255, 0, 0), 2)
+    #cv2.line(frame, (height, CoorXExitLine), (width, CoorXExitLine), (0, 0, 255), 2)
 
     for i in range(0, detections.shape[2]):
         # extract the confidence (i.e., probability) associated
         # with the
         # prediction
         confidence = detections[0, 0, i, 2]
-
-        peopleCount += 1
 
         # filter out weak detections by ensuring the `confidence` is
         # greater than the minimum confidence

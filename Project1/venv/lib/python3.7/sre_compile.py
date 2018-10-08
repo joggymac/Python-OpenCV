@@ -1,5 +1,0 @@
-XSym
-0078
-f630bc880216cce90764d2fdffee8a18
-/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/sre_compile.py
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
