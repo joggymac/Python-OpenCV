@@ -18,7 +18,7 @@ import numpy as np
 import argparse
 import imutils
 import time
-import dlib
+#import dlib
 import cv2
 
 # construct the argument parse and parse the arguments
@@ -105,6 +105,7 @@ while True:
 	if W is None or H is None:
 		(H, W) = frame.shape[:2]
 
+
 	# if we are supposed to be writing a video to disk, initialize
 	# the writer
 	if args["output"] is not None and writer is None:
@@ -189,7 +190,7 @@ while True:
 	# draw a horizontal line in the center of the frame -- once an
 	# object crosses this line we will determine whether they were
 	# moving 'up' or 'down'
-	cv2.line(frame, (0, H // 2), (W, H // 2), (0, 255, 255), 2)
+	cv2.line(frame, (H, W), (H, 0 // 2), (0, 255, 255), 2)
 
 	# use the centroid tracker to associate the (1) old object
 	# centroids with (2) the newly computed object centroids
@@ -213,7 +214,7 @@ while True:
 			# us in which direction the object is moving (negative for
 			# 'up' and positive for 'down')
 			y = [c[1] for c in to.centroids]
-			direction = centroid[1] - np.mean(y)
+			direction = centroid[1] - np.mean(x)
 			to.centroids.append(centroid)
 
 			# check to see if the object has been counted or not

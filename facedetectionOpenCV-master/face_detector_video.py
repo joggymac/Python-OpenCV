@@ -1,4 +1,6 @@
 # importing necessary packages
+from pyimagesearch.centroidtracker import CentroidTracker
+from pyimagesearch.trackableobject import TrackableObject
 from imutils.video import VideoStream
 import imutils
 import numpy as np
@@ -6,9 +8,10 @@ import argparse
 import time
 import cv2
 
-# construct the arguments parse and parse the arguments
+
 ap = argparse.ArgumentParser()
 
+#add these permametors to the lauch options
 ap.add_argument("-p", "--prototxt", required=True, help="path to Caffe 'deploy' prototxt file")
 ap.add_argument("-m", "--model", required=True, help="path to Caffe pre-trained model")
 ap.add_argument("-c", "--confidence", type=float, default=0.5, help="minimum probability to filter weak detections")
@@ -24,16 +27,40 @@ print("[INFO] starting video stream, please wait...")
 vs = VideoStream(src=0).start()
 time.sleep(3)
 
+# initialize the video writer (we'll instantiate later if need be)
+writer = None
+
+
+# initialize the frame dimensions (we'll set them as soon as we read
+# the first frame from the video)
+W = None
+H = None
+
+ct = CentroidTracker(maxDisappeared=40, maxDistance=50)
+trackers = []
+trackableObjects = {}
+
+
+# total number of objects that have moved either up or down
+totalFrames = 0
+totalDown = 0
+totalUp = 0
+
+
+
 # loop over the frames from the video stream
 while True:
     # grab the frame from the threaded video stream and resize it
     # to have a maximum width of 1000 pixels
     frame = vs.read()
-    frame = imutils.resize(frame, width=1000, height=1000)
+    frame = imutils.resize(frame, width=640, height=480)
 
     # grab the frame dimensions and convert it to a blob
-    (h, w) = frame.shape[:2]
+    (h, w) = frame.shape[:4]
     blob = cv2.dnn.blobFromImage(cv2.resize(frame, (300, 300)), 1.0, (300, 300), (103.93, 116.77, 123.68))
+
+    if W is None or H is None:
+        (H, W) = frame.shape[:2]
 
     # pass the blob through the network and obtain the detections and predictions
     net.setInput(blob)
