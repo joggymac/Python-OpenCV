@@ -1,9 +1,12 @@
 # import the necessary packages
-#from scipy.spatial import distance as dist
+from scipy.spatial import distance as dist
 from collections import OrderedDict
 import numpy as np
 
+
+
 class CentroidTracker:
+	n = 1
 	def __init__(self, maxDisappeared=50, maxDistance=50):
 		# initialize the next unique object ID along with two ordered
 		# dictionaries used to keep track of mapping a given object

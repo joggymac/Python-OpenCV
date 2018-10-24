@@ -18,7 +18,7 @@ import numpy as np
 import argparse
 import imutils
 import time
-#import dlib
+import dlib
 import cv2
 
 # construct the argument parse and parse the arguments
@@ -179,10 +179,10 @@ while True:
 			pos = tracker.get_position()
 
 			# unpack the position object
-			startX = int(pos.left())
-			startY = int(pos.top())
-			endX = int(pos.right())
-			endY = int(pos.bottom())
+			startX = int(pos.right())
+			startY = int(pos.bottom())
+			endX = int(pos.left())
+			endY = int(pos.top())
 
 			# add the bounding box coordinates to the rectangles list
 			rects.append((startX, startY, endX, endY))
