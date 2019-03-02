@@ -151,14 +151,14 @@ while True:
 
 				# compute the (x, y)-coordinates of the bounding box
 				# for the object
-				box = detections[0, 0, i, 3:7] * np.array([W, H, W, H])
+				box = detections[0, 0, i, 3:7] * np.array([H, W, H, W])
 				(startX, startY, endX, endY) = box.astype("int")
 
 				# construct a dlib rectangle object from the bounding
 				# box coordinates and then start the dlib correlation
 				# tracker
 				tracker = dlib.correlation_tracker()
-				rect = dlib.rectangle(startX, startY, endX, endY)
+				rect = dlib.rectangle(int(startX), int(startY), int(endX), int(endY))
 				tracker.start_track(rgb, rect)
 
 				# add the tracker to our list of trackers so we can
@@ -214,6 +214,7 @@ while True:
 			# us in which direction the object is moving (negative for
 			# 'up' and positive for 'down')
 			y = [c[1] for c in to.centroids]
+			x = 0
 			direction = centroid[1] - np.mean(x)
 			to.centroids.append(centroid)
 

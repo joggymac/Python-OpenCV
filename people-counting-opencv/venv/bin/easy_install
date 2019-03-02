@@ -1,4 +1,4 @@
-#!/Users/ben/Documents/GitHub/Python-OpenCV/people-counting-opencv/venv/bin/python
+#!/home/ben/Git/Python-OpenCV/people-counting-opencv/venv/bin/python
 # EASY-INSTALL-ENTRY-SCRIPT: 'setuptools==39.1.0','console_scripts','easy_install'
 __requires__ = 'setuptools==39.1.0'
 import re
